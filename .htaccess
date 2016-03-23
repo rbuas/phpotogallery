@@ -1,0 +1,36 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+Options -Indexes
+
+AddType 'text/xml; charset=UTF-8' rss
+
+RewriteRule ^media/(.*)$ /_synapse/media.php?m=$1 [NC,PT]
+RewriteRule ^mediaget/(.*)$ /_synapse/media.php?m=$1&get=1 [NC,PT]
+RewriteRule ^mediaskin/(.*)$ /_synapse/mediaskin.php?m=$1 [NC,PT]
+RewriteRule ^mediaext/(.*)$ /_synapse/mediaext.php?m=$1 [NC,PT]
+
+RewriteCond %{SCRIPT_FILENAME} logo.png$ [NC,OR]
+RewriteCond %{SCRIPT_FILENAME} cam.png$ [NC,OR]
+RewriteRule ^ - [L]
+
+RewriteCond %{HTTP_REFERER} ^$
+RewriteCond %{SCRIPT_FILENAME} media\.php$ [NC,OR]
+RewriteCond %{SCRIPT_FILENAME} mediaget\.php$ [NC,OR]
+RewriteCond %{SCRIPT_FILENAME} mediaskin\.php$ [NC]
+RewriteRule (.*) index.php?access=denied [QSA,L]
+
+RewriteCond %{HTTP_REFERER} ^$
+RewriteCond %{SCRIPT_FILENAME} \.config$ [NC]
+RewriteRule (.*) index.php?access=denied [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} \.(gif|png|jpg|jpeg|bmp)$ [NC]
+RewriteRule (.*)$ http://lorempicsum.com/rio/627/300/4 [NC,R,L]
+
+# Don't rewrite files or directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+# Rewrite everything else to index.php to index.php
+RewriteRule ^ /index.php [L]
+</IfModule>
