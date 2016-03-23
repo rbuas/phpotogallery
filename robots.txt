@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /_*
+Disallow: http://rbuas.com/RBUAS
+Sitemap: http://rbuas.com/sitemap.xml
