@@ -1,0 +1,89 @@
+<div data-ng-show="master.menu" data-ng-init="master.mainmenuopened = false">
+    <div class="menupanel-closeout" data-ng-show="master.mainmenuopened" data-ng-click="master.mainmenuopened = false;"></div>
+
+    <div class="optionsbutton menuanchor" data-ng-click="master.mainmenuopened = true">
+        <img data-ng-src="{{master.skin('menu.png')}}" alt="menu" />
+    </div>
+
+    <div class="menupanel" data-ng-class="{active:master.mainmenuopened}">
+        <ul>
+            <li class="closebutton" data-ng-click="master.mainmenuopened = false;">
+                <div class="button">
+                    <img data-ng-src="{{master.skin('close.png')}}" alt="menu close button image" />
+                </div>
+            </li>
+
+            <li class="menulink" data-ng-repeat="menuitem in master.menu">
+                <a href="#{{menuitem.slug}}" title="{{menuitem.tip}}" alt="menu item {{menuitem.slug}}">
+                    <div class="button">
+                        <img data-ng-src="{{master.skin(menuitem.icon)}}" alt="menu {{menuitem.slug}}" />
+                        <div class="item_content">
+                            <span class="item_title">{{menuitem.label}}</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+
+            <li class="user" data-ng-controller="NeuroneUser as user">
+                <div class="login" data-ng-show="!user.isLogged()">
+                    <h3>{{master.translate('LOGIN_TITLE')}}</h3>
+                    <div class="block message {{user.messageType}}" data-ng-if="user.message" data-ng-cloak data-description="{{user.message}}">
+                       {{master.translate({
+                           "PT":"oops, tente outra vez !",
+                           "EN":"oops, try again !",
+                           "FR":"oops, essayez un autre fois !"
+                       })}}
+                    </div>
+                    <div class="block">
+                        <input type="text" 
+                               data-ng-model="user.login_mail" 
+                               data-ng-keypress="user.login($event)"
+                               data-ng-class="{inputerror: user.postback && !user.login_mail}"
+                               placeholder="{{master.translate('USER_ID')}}"
+                               title="{{master.translate('USER_ID')}}" />
+                    </div>
+                    <div class="block">
+                        <input type="password" 
+                               data-ng-model="user.login_pass" 
+                               data-ng-keypress="user.login($event)"
+                               data-ng-class="{inputerror: user.postback && !user.login_pass}"
+                               placeholder="{{master.translate('USER_PASS')}}"
+                               title="{{master.translate('USER_PASS')}}" />
+                    </div>
+                    <div class="block actions">
+                        <span class="buttonlink" data-ng-click="user.register()">{{master.translate('BUTTON_REGISTER')}}</span>
+                        <span class="buttonlink" data-ng-click="user.login()">{{master.translate('BUTTON_LOGIN')}}</span>
+                        <span class="buttonlink autowidth" data-ng-click="user.retrievePassword()">{{master.translate('BUTTON_REMEMBER')}}</span>
+                    </div>
+                </div>
+                <div class="block logout" data-ng-show="user.isLogged()">
+                    {{user.salutation}}
+                    <h3>{{user.current.email}}</h3>
+                    <div class="block actions">
+                        <span class="buttonlink" data-ng-click="user.logout()">{{master.translate('BUTTON_LOGOUT')}}</span>
+                    </div>
+                </div>
+
+                <ul class="block langoptions">
+                    <li data-ng-repeat="langitem in master.languages" 
+                        title="{{langitem.tip}}"
+                        data-ng-click="master.setLang(langitem.lang)">
+                        <img data-ng-src="{{master.skin(langitem.icon)}}" 
+                             class="{{master.language.icon == langitem.icon ? 'active' : ''}}" 
+                             alt="button language {{langitem.lang}}" />
+                    </li>
+                </ul>
+            </li>
+
+            <li class="social" data-ng-if="master.followus != null" data-ng-cloak>
+                <ul>
+                    <li data-ng-repeat="social in master.followus" title="{{social.title}}">
+                        <a href="{{social.link}}" targer="_blank" rel="nofollow">
+                            <img data-ng-src="{{social.icon}}" alt="{{social.key}}" />
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="admin" data-ng-controller="NeuroneAdmin as admin">
+    <div class="actions">
+        <span class="button" data-ng-click="admin.buildSite()">build</span>
+        <span class="button" data-ng-click="admin.cleanSite()">clean</span>
+        <div class="guardian" data-ng-if="admin.guardianactive" data-ng-cloak>
+            <span>{{admin.guardianactive}}</span>
+            <span class="button" data-ng-click="admin.removeGuardian()">remove guardian</span>
+        </div>
+        <div class="guardian" data-ng-if="!admin.guardianactive" data-ng-cloak>
+            <input type="text" data-ng-model="admin.guardian" />
+            <span class="button" data-ng-click="admin.activeGuardian(admin.guardian)">guardian</span>
+        </div>
+    </div>
+
+    <h3>Users</h3>
+    <table class="userlist" data-ng-if="admin.userlist != null" data-ng-cloak>
+        <tr>
+            <th>{{master.translate("STATUS")}}</th>
+            <th>{{master.translate("EMAIL")}}</th>
+            <th>{{master.translate("LANG")}}</th>
+            <th>{{master.translate("NEWSIN")}}</th>
+            <th>{{master.translate("PASSPORT")}}</th>
+            <th>{{master.translate("FAVORITE")}}</th>
+            <th>{{master.translate("HISTORY")}}</th>
+        </tr>
+        <tr data-ng-repeat="user in admin.userlist">
+            <td>{{user.status}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.lang}}</td>
+            <td>{{user.news}}</td>
+            <td>
+                <ul data-ng-if="user.passport != null" data-ng-cloak>
+                    <li data-ng-repeat="(key, passport) in user.passport">{{key}}</li>
+                </ul>
+            </td>
+            <td>
+                <ul data-ng-if="user.favorite != null" data-ng-cloak>
+                    <li data-ng-repeat="favorite in user.favorite">{{favorite}}</li>
+                </ul>
+            </td>
+            <td>
+                <ul data-ng-if="user.history != null" data-ng-cloak>
+                    <li data-ng-repeat="history in user.history">{{history}}</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Pages</h3>
+    <table class="pages" data-ng-if="admin.pages != null" data-ng-cloak>
+        <tr>
+            <th>{{master.translate("STATUS")}}</th>
+            <th>{{master.translate("DATE")}}</th>
+            <th>{{master.translate("SLUG")}}</th>
+            <th>{{master.translate("TITLE")}}</th>
+        </tr>
+        <tr data-ng-repeat="(slug, page) in admin.pages">
+            <td>{{page.PRIVATE ? 'PRIVATE' : 'PUBLIC'}} <a href="#{{slug}}">view</a></td>
+            <td>{{album.DATE}}</td>
+            <td>{{slug}}</td>
+            <td>{{album.TITLE}}</td>
+        </tr>
+    </table>
+
+    <h3>Catalog</h3>
+    <table class="catalog" data-ng-if="admin.catalog != null" data-ng-cloak>
+        <tr>
+            <th>{{master.translate("STATUS")}}</th>
+            <th>{{master.translate("DATE")}}</th>
+            <th>{{master.translate("SLUG")}}</th>
+            <th>{{master.translate("CATEGORIES")}}</th>
+        </tr>
+        <tr data-ng-repeat="(slug, album) in admin.catalog">
+            <td>
+                <a class="buttonlink" href="#{{slug}}">view</a>
+                <span class="buttonlink" data-ng-click="admin.buildAlbum(slug)">build</span>
+            </td>
+            <td>{{album.DATE}}</td>
+            <td>{{slug}}</td>
+            <td>
+                <ul data-ng-if="album.CATEGORY != null" data-ng-cloak>
+                    <li data-ng-repeat="category in album.CATEGORY">{{category}},</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>

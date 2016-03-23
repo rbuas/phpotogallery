@@ -1,0 +1,14 @@
+<nav class="pages" data-ng-show="master.pages.length > 0">
+    <a href="#home" title="">home</a><a href="#{{page.slug}}" title="{{page.tip}}" data-ng-repeat="page in master.pages" data-ng-if="page.label">{{page.label}}</a>
+</nav>
+
+<!-- nav class="catalog" data-ng-show="master.catalog">
+    <a href="#{{page.slug}}" title="{{page.tip}}" data-ng-repeat="page in master.catalog">{{page.label}}</a>
+</nav -->
+
+<nav class="feed" data-ng-if="master.feed != null" data-ng-cloak>
+    <a href="{{feed.link}}" data-ng-repeat="feed in master.feed" title="{{feed.title}}">
+        <img data-ng-src="{{feed.icon}}" alt="{{feed.key}}" />
+        <span>{{feed.key}}</span>
+    </a>
+</nav>

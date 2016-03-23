@@ -1,0 +1,20 @@
+<div class="card navigation" data-ng-include="master.skeleton('navigation')"></div>
+
+<ul class="followus" data-ng-if="master.followus != null" data-ng-cloak>
+    <li data-ng-repeat="social in master.followus" title="{{social.title}}">
+        <a href="{{social.link}}" targer="_blank" rel="nofollow">
+            <img data-ng-src="{{social.icon}}" alt="{{social.key}}" />
+        </a>
+    </li>
+</ul>
+
+<div class="footer-info">
+    <div class="contact">
+        <a href="#copyright">copyright</a>
+        &nbsp;©&nbsp;
+        {{master.today | date:'yyyy'}}
+        <a href="{{master.config('SITEURL')}}">{{master.config('SITENAME')}}</a>
+        &nbsp;|&nbsp;
+        {{master.config('EMAIL')}}
+    </div>
+</div>

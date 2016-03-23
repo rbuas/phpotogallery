@@ -1,0 +1,365 @@
+.viewport-height { height:100vh; }
+.viewport-minheight { min-height:100vh; }
+.viewport-minwidth { min-width:100vw; }
+.viewport-width { width:100vw; }
+
+.error {
+    color:white;
+    background:red;
+}
+
+.img-stretch-ratio {
+    display: block;
+    min-height: 100%;
+    min-width: 100%;
+    max-height: none;
+    max-width: none;
+    height: auto;
+    width: auto;
+    object-fit: cover;
+}
+
+.img-cover {
+    width:100%;
+    height:100%;
+    object-fit: cover;
+}
+
+.img-rounded {
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+}
+
+.img-polaroid { 
+  padding: 4px; 
+  background-color: #fff; 
+  border: 1px solid #ccc; 
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.img-circle {
+  -webkit-border-radius: 500px;
+     -moz-border-radius: 500px;
+          border-radius: 500px;
+}
+
+.photo {
+    /*
+    img::after {
+        content: url(/mediaskin/draglock.gif);
+        display: block;
+        position: absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height: 100%;
+    }
+    */
+    img.draglock {
+        display: block;
+        position: absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height: 100%;
+    }
+}
+
+.align-center () {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    -ms-transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(-50%, -50%, 0);
+}
+
+.vertical-align () {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.horizontal-align () {
+    position: relative;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.blur (@intensity : 20px) {
+    -webkit-filter: blur(@intensity);
+    -webkit-filter: blur(@intensity);
+    -moz-filter: blur(@intensity);
+    -o-filter: blur(@intensity);
+    -ms-filter: blur(@intensity);
+    filter: blur(@intensity);
+    _filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius=@intensity);
+}
+.grayscale (@opacity: 80%) {
+    filter: grayscale(@opacity);
+    -webkit-filter: grayscale(@opacity);
+    -moz-filter: grayscale(@opacity);
+    -ms-filter: grayscale(@opacity);
+    -o-filter: grayscale(@opacity);
+}
+.background-gradient (@start: #000, @end: #fff) {
+    background: @start; /* Old browsers */
+    background: -moz-linear-gradient(top, @start 0%, @end 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@start), color-stop(100%,@end)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, @start 0%,@end 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, @start 0%,@end 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, @start 0%,@end 100%); /* IE10+ */
+    background: linear-gradient(to bottom, @start 0%,@end 100%); /* W3C */
+    _filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@start', endColorstr='@end',GradientType=0 ); /* IE6-9 */
+}
+.shadow (@opacity : 0.85, @delta : -15px) {
+    -webkit-box-shadow: 0px 0px 70px @delta rgba(0,0,0,@opacity);
+    -moz-box-shadow: 0px 0px 70px @delta rgba(0,0,0,@opacity);
+    box-shadow: 0px 0px 70px @delta rgba(0,0,0,@opacity);
+}
+.radialblur () {
+    -webkit-mask: -webkit-radial-gradient( center, closest-side, transparent 30%, black 80%);
+    -webkit-mask: radial-gradient( closest-side at center, transparent 50%, black 110%);
+}
+.radialgradient (@start: 0.3, @end : 0.9) {
+    background: rgba(0,0,0,@start);
+    background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,@start) 0%, rgba(0,0,0,@end) 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(0,0,0,@start)), color-stop(100%, rgba(0,0,0,@end)));
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,@start) 0%, rgba(0,0,0,@end) 100%);
+    background: -o-radial-gradient(center, ellipse cover, rgba(0,0,0,@start) 0%, rgba(0,0,0,@end) 100%);
+    background: -ms-radial-gradient(center, ellipse cover, rgba(0,0,0,@start) 0%, rgba(0,0,0,@end) 100%);
+    background: radial-gradient(ellipse at center, rgba(0,0,0,@start) 0%, rgba(0,0,0,@end) 100%);
+    _filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000', GradientType=1 );
+}
+.border-radius(@radius: 5px) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+          border-radius: @radius;
+}
+
+.vendor(@property, @value) {
+    -webkit-@{property}:    @value;
+    -khtml-@{property}:     @value;
+    -moz-@{property}:       @value;
+    -ms-@{property}:        @value;
+    @{property}:            @value;
+}
+
+.button-animated () {
+    position: relative;
+    border: none;
+    background: none;
+    overflow: visible;
+    -webkit-transition: color 0.7s;
+    transition: color 0.7s;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+    &.click, &:focus {
+        outline: none;
+    }
+    &::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -35px 0 0 -35px;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        content: '';
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+.blink {
+    background: rgba(255, 255, 255, 0);
+    -webkit-transition: background-color 0.35s;
+    transition: background-color 0.35s;
+
+    &.click { 
+        background: @color_text;
+        color:#fff - @color_text;
+        -webkit-transition: background-color 0.15s;
+        transition: background-color 0.15s;
+    }
+}
+
+.fadetimer (@timer : 5s, @func : ease-in) {
+    -webkit-transition: opacity @timer ease-in;
+    -moz-transition: opacity @timer ease-in;
+    -o-transition: opacity @timer ease-in;
+    -ms-transition: opacity @timer ease-in;
+    transition: opacity @timer ease-in;
+}
+
+.fade {
+    opacity: 0;
+    .fadetimer(0.7s);
+
+    &.active {
+        opacity: 1;
+        .fadetimer(0.7s);
+    }
+}
+
+.containerfadein {
+    opacity: 0;
+    .fadetimer(0.5s);
+
+    &.fadein {
+        opacity: 1;
+        .fadetimer(0.5s);
+    }
+}
+
+.imageonload-waiting {
+    opacity: 0 !important;
+    .fadetimer(0);
+}
+.imageonload-loaded {
+    opacity: 1 !important;
+    .fadetimer(1s);
+}
+.imageonload-error {
+    opacity: 0.5 !important;
+    background: #f00;
+    .fadetimer(1s);
+}
+
+.coverback {
+    font-family: @spot_fontfamily;
+
+    figure {
+        position: relative;
+        border:0;
+        margin:0;
+        padding:0;
+        width:100%;
+        height:100%;
+
+        img {
+            display: block;
+            border:0;
+
+            .img-stretch-ratio;
+            width:100%;
+        }
+        h3 {
+            text-transform: uppercase;
+            word-spacing: -0.15em; 
+            font-weight: 300;
+            font-size: @cover_fontsize;
+            text-shadow: 1px 1px 1px #000;
+            position: absolute;
+            width: 100%;
+            padding:50% 5% 0;
+        }
+        .back {
+            margin:auto;
+            letter-spacing: 1px;
+            font-size: @back_fontsize;
+            padding:50% @padding_base @padding_base;
+        }
+        figcaption {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+            background: none;
+        }
+
+        * {
+            -webkit-transition: opacity 0.1s;
+            transition: opacity 0.1s;
+        }
+        h3 { 
+            -webkit-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+        .back { opacity: 0; }
+        &:hover {
+            * {
+                -webkit-transition: opacity 0.3s;
+                transition: opacity 0.3s;
+            }
+            figcaption { .radialgradient(0.8, 1); }
+            h3 {
+                -webkit-transform: translate3d(0, -50%, 0);
+                -ms-transform: translate3d(0, -50%, 0);
+                transform: translate3d(0, -50%, 0);
+            }
+            .back { opacity: 1; }
+        }
+
+    }
+}
+
+.coverback-frame {
+    .coverback;
+    figure {
+        figcaption {
+
+            &::before, &::after {
+                position: absolute;
+                content: '';
+                opacity: 0;
+            }
+            &::before {
+                top: 40px;
+                right: 25px;
+                bottom: 40px;
+                left: 25px;
+                border-top: 1px solid #fff;
+                border-bottom: 1px solid #fff;
+
+                -webkit-transform: scale(0,1);
+                transform: scale(0,1);
+                -webkit-transform-origin: 0 0;
+                transform-origin: 0 0;
+            }
+            &::after {
+                top: 25px;
+                right: 40px;
+                bottom: 25px;
+                left: 40px;
+                border-right: 1px solid #fff;
+                border-left: 1px solid #fff;
+                -webkit-transform: scale(1,0);
+                transform: scale(1,0);
+                -webkit-transform-origin: 100% 0;
+                transform-origin: 100% 0;
+            }
+        }
+    }
+}
+
+.swiper-lazy-loader, .imageinview-waiting {
+    background: url("/mediaskin/loader.gif");
+    background-repeat: no-repeat;
+    background-position: center; 
+    min-height: 45px;
+    min-width: 45px;
+}
+.imageinview-waiting {
+    opacity: 0.9 !important;
+    filter: alpha(opacity=90) !important;
+}
+.swiper-button {
+    opacity: 0.3;
+}
+
+.test {
+    -webkit-transition: all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}

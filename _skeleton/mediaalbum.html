@@ -1,0 +1,111 @@
+<div class="mediaalbum {{slug}}" data-ng-if="album != null" data-ng-cloak>
+    <div class="card swiper-container pagefix outdoor" data-ng-if="viewmode == 'SLIDE' && album.viewlist.length > 0" data-ng-cloak>
+        <div class="swiper-wrapper">
+            <div data-ng-repeat="(index, media) in album.viewlist track by $index"
+                class="swiper-slide board"
+                id="mediaitem-{{media.id}}"
+                data-hash="/{{slug}}/{{media.id}}{{explicitParams}}">
+
+                <figure class="photo" 
+                        data-ng-init="showMediaInfo(media.id, false)" 
+                        data-ng-mouseleave="showMediaInfo(media.id, false)">
+                    <img data-src="{{media.fileweb}}" class="swiper-lazy swiper-lazy-loader inbox" />
+                    <img class="draglock" src="/mediaskin/draglock.gif" alt="draglock" data-ng-click="showMediaInfo(media.id)" />
+                    <ng-include src="'/_skeleton/mediainfo.html'" />
+                </figure>
+
+                <img class="background swiper-lazy" data-src="{{media.filethumb}}" alt="background" />
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button swiper-button-prev swiper-button-white"></div>
+        <div class="swiper-button swiper-button-next swiper-button-white"></div>
+    </div>
+
+    <div class="card albuminfo" data-ng-if="showinfopanel" data-ng-cloak>
+        <div class="description">
+            <h3 data-ng-if="album.title != null" data-ng-cloak>{{album.DATE}} - {{album.title}}</h3>
+            <div class="slug" data-ng-if="slug != null" data-ng-cloak>/{{slug}}</div>
+            <div class="resume" data-ng-if="album.resume != null" data-ng-cloak>{{album.resume}}</div>
+            <ul class="albumtags" data-ng-if="album.CATEGORY != null" data-ng-cloak>
+                <li data-ng-repeat="category in album.CATEGORY track by $index">#{{category}}</li>
+            </ul>
+        </div>
+        <div class="content" data-ng-if="album.content != null" data-ng-include="album.content" data-ng-cloak></div>
+    </div>
+
+    <div class="card controle" data-ng-if="showcontrolpanel" data-ng-cloak>
+        <div class="phototags">
+            <span class="blink toggle_border buttonlink" data-ng-if="!album.showphototags" data-ng-click="album.showphototags = true">
+                #
+                {{translate({
+                    "PT" : "filtrar fotos",
+                    "FR" : "trier les photos",
+                    "EN" : "filter photos",
+                    "ES" : "filtrar fotos" 
+                })}}
+                #
+            </span>
+        </div>
+        <ul class="phototags" data-ng-if="album.showphototags && album.tags != null" data-ng-cloak>
+            <li data-ng-repeat="(tag,tagcount) in album.tags track by $index"
+                data-ng-click="toggleFilter(tag)"
+                class="blink toggle_border buttonlink" 
+                data-ng-class="{active:isFilterActive(tag), click:click[tag]}"
+                data-ng-mousedown="click[tag] = true" 
+                data-ng-mouseup="click[tag] = false">
+                #{{tag}} <sup>({{tagcount}})</sup>
+            </li>
+        </ul>
+        <ul class="thumbs" data-ng-if="album.viewlist.length > 0" data-ng-cloak>
+            <li data-ng-repeat="(index, media) in album.viewlist track by $index"
+                class="cell-pico cell-sq"
+                data-ng-mousedown="click[index] = true" 
+                data-ng-mouseup="click[index] = false"
+                data-ng-click="goToIndex(index, media.id, $event)">
+                    <a href="#{{slug}}/{{media.id}}">
+                        <div class="photo nucleus toggle_foreground twinkle"
+                            data-ng-class="{active:album.media==media.id, click:click[index]}">
+                            <img data-ng-src="{{media.filethumb}}"
+                                 class="{{media.style}}"
+                                 title="{{media.title}}"
+                                 alt="{{media.id}}" />
+                        </div>
+                    </a>
+            </li>
+        </ul>
+        <div class="mediaplus" data-ng-show="album.teaser" data-ng-click="setTeaserMode(!album.teaser)">
+            <span class="buttonlink">
+                +
+                {{translate({
+                    "PT" : "ver mais fotos",
+                    "FR" : "voir plus de photos",
+                    "EN" : "see more photos",
+                    "ES" : "ver más fotos" 
+                })}}
+                +
+            </span>
+        </div>
+    </div>
+
+    <div class="historyline" data-ng-if="viewmode == 'HISTORYLINE' && album.viewlist.length > 0" data-ng-cloak>
+        <div data-ng-repeat="(index, media) in album.viewlist track by $index"
+            class="card historyboard viewport-height"
+            id="mediaitem-{{media.id}}"
+            data-hash="/{{slug}}/{{media.id}}{{explicitParams}}">
+
+            <figure class="photo" 
+                    data-ng-init="showMediaInfo(media.id, false)" 
+                    data-ng-mouseleave="showMediaInfo(media.id, false)">
+                <img data-imageinview data-src="{{media.fileweb}}" class="inbox" />
+                <img class="draglock" src="/mediaskin/draglock.gif" alt="draglock" data-ng-click="showMediaInfo(media.id)" />
+                <ng-include src="'/_skeleton/mediainfo.html'" data-ng-show="mediainfo[media.id]" />
+            </figure>
+
+            <img class="background" data-imageinview data-src="{{media.filethumb}}" alt="background" />
+        </div>
+    </div>
+
+    <div class="copyright_warning" data-ng-if="showinfopanel || showcontrolpanel" data-ng-include="skeleton('copyright')"></div>
+
+</div>

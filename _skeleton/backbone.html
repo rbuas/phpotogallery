@@ -1,0 +1,17 @@
+<section class="message" data-ng-if="false && master.errors != null" data-ng-cloak>
+    <ul class="error">
+        <li data-ng-repeat="error in master.errors">{{error}}</li>
+    </ul>
+</section>
+
+<section class="header" data-ng-include="master.skeleton('header')"></section>
+
+<section class="bodycontent viewport-minheight" data-ng-show="master.route" data-ng-include="master.route.skeleton"></section>
+
+<section class="menu" data-ng-include="master.skeleton('menu')"></section>
+
+<section class="footer" data-ng-include="master.skeleton('footer')"></section>
+
+<div class="waiting" data-ng-show="master.waiting()">
+    <div class="content">...</div>
+</div>

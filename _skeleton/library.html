@@ -1,0 +1,15 @@
+<div class="album-library" data-ng-show="master.route">
+
+    <div class="library-portfolio">
+        <mediaalbum data-ng-if="master.route.collection" data-ng-cloak data-slug="master.route.collection" data-urlless="true" data-restart="true" />
+    </div>
+
+    <h1 class="title" data-ng-if="master.route.title != null" data-ng-cloak>{{master.route.title}}</h1>
+
+    <div class="resume" data-ng-if="master.route.resume != null" data-ng-cloak>{{master.route.resume}}</div>
+
+    <div class="content" data-ng-if="master.route.content != null" data-ng-include="master.route.content" data-ng-cloak></div>
+
+    <medialibrary data-filter="master.route.library" data-exfilter="master.route.blacklist" />
+
+</div>

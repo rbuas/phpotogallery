@@ -1,0 +1,31 @@
+{
+    "skininput" : "../_skin/skin.less",
+    "skinoutput" : "../_skin/",
+    "skinfiles" : "../_skin/*.less",
+    "ftp_user" : "thevisia",
+    "ftp_password" : "",
+    "ftp_port" : "",
+    "ftp_host" : "ftp.thevisian.com",
+    "ftp_path" : "/public_html/rbuasv3/",
+
+    "base_public" : [
+        "../*",
+        "../_brain/*",
+        "../_cortex/*",
+        "../_ext/*",
+        "../_skeleton/*",
+        "../_skin/*",
+        "../_synapse/*"
+    ],
+    "base_private" : [
+        "../_build",
+        "../__*",
+        "../*.rss",
+        "../*.jsc",
+        "../*.xml",
+        "../robots.txt",
+        "../.htaccess"
+    ],
+    "base_friends" : "../_friends/*",
+    "base_memory" : "../RBUAS/*"
+}

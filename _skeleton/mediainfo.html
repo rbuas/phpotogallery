@@ -1,0 +1,63 @@
+<figcaption class="mediainfos" 
+    data-ng-class="{active : isVisibleInfo(media.id)}"
+    data-ng-show="isVisibleInfo(media.id)" 
+    data-ng-click="showMediaInfo(media.id, false)" 
+    data-ng-mouseleave="showMediaInfo(media.id, false)">
+    <div class="infocontent">
+        <h3 data-ng-if="album.TITLE != null" data-ng-cloak>
+            {{album.DATE}} - {{album.TITLE}}
+        </h3>
+        <div class="metainfo">
+            <div class="share">
+                <a class="imglink" href="/#/{{slug}}/{{media.id}}{{explicitParams}}" title="{{info.permalinkTip}}">
+                    <img data-ng-src="{{info.permalinkIcon}}" alt="permalink button" />
+                </a>
+                <span class="id">{{media.id}}</span>
+                <a class="imglink" href="{{media.downloadweb}}" title="{{info.mediawebTip}}" download="{{media.id}}_web">
+                    <img data-ng-src="{{info.mediawebIcon}}" alt="download web resolution button" />
+                </a>
+            </div>
+            <span class="date">{{media.ModifyDate}}</span>
+            <span class="artist">{{media.Creator}} &copy; {{media.Copyright}}</span>
+            <span class="location">{{media.City}}, {{media.Region}}, {{media.Country}}</span>
+        </div>
+        <div class="tecinfo">
+            <span class="file">{{media.W}}x{{media.H}}</span>
+            <span class="lens">{{media.Model}} {{media.Lens}}</span>
+            <span class="exposure">@ {{media.Focal}}mm {{media.EX}} F{{media.FN}} ISO{{media.ISO}}</span>
+            <span class="color">
+                WB {{media.WB}} <span data-ng-if="media.K" data-ng-cloak>({{media.K}})</span>
+            </span>
+        </div>
+        <div class="categories" data-ng-if="media.Tags != null" data-ng-cloak>
+            <ul>
+                <li data-ng-repeat="tag in media.Tags track by $index">#{{tag}}</li>
+            </ul>
+        </div>
+        <div class="rating">
+            {{media.Rating}}
+        </div>
+        <div class="social">
+            <a class="imglink" href="{{info.mailBase}}/#/{{slug}}/{{media.id}}" title="{{info.mainTip}}" target="_blank">
+                <img data-ng-src="{{info.mailIcon}}" alt="mail button" />
+            </a>
+            <a class="imglink" href="{{info.facebookBase}}{{media.fileweb}}" title="{{info.facebookTip}}" target="_blank">
+                <img data-ng-src="{{info.facebookIcon}}" alt="facebook button" />
+            </a>
+            <a class="imglink" href="{{info.pinterestBase}}/#/{{slug}}/{{media.id}}&amp;media={{info.siteurl}}{{media.fileweb}}&amp;description={{album.TITLE}}-{{media.title}}" title="{{info.pinterestTip}}" target="_blank">
+                <img data-ng-src="{{info.pinterestIcon}}" alt="pinterest button" />
+            </a>
+            <a class="imglink" href="{{info.gplusBase}}{{media.fileweb}}" title="{{info.gplusTip}}" target="_blank">
+                <img data-ng-src="{{info.gplusIcon}}" alt="google plus button" />
+            </a>
+            <a class="imglink" href="{{info.twitterBase}}{{media.fileweb}}" title="{{info.twitterTip}}" target="_blank">
+                <img data-ng-src="{{info.twitterIcon}}" alt="twitter plus button" />
+            </a>
+        </div>
+    </div>
+    <div class="closebutton" data-ng-click="master.mainmenuopened = false;">
+        <div class="button">
+            <img src="/mediaskin/close.png" alt="menu close button image" />
+        </div>
+    </div>
+</figcaption>

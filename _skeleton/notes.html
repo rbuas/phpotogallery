@@ -1,0 +1,15 @@
+<div class="webnotes {{notes.noteid}}" data-ng-controller="NeuroneNotes as notes">
+    <div class="notetitle" data-ng-if="notes.note != null" data-ng-cloak>
+        #notes/{{notes.note.id}}
+        <span class="button" data-ng-if="notes.master" data-ng-cloak data-ng-click="notes.edit()">edit</span>
+    </div>
+    <div class="noteview {{notes.note.id}}" data-ng-if="notes.note != null" data-ng-cloak data-ng-bind-html="notes.notecontent"></div>
+    <div class="noteedit" data-ng-if="notes.showEditPanel()" data-ng-cloak>
+        <textarea data-ng-model="notes.notecontent">{{notes.notecontent}}</textarea>
+        <span class="button" data-ng-click="notes.saveChanges()">save</span>
+        <span class="button" data-ng-click="notes.discardChanges()">discard</span>
+    </div>
+    <ul class="notelist" data-ng-if="notes.notelist" data-ng-cloak>
+        <li data-ng-repeat="note in notes.notelist"><a href="#{{notes.slug}}/{{note}}">{{note}}</a></li>
+    </ul>
+</div>

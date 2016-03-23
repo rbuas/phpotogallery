@@ -1,0 +1,44 @@
+<div class="medialist" data-ng-show="medialist != null">
+
+    <div id="swiper-{{medialistid}}" class="swiper-container pagefix popin" data-ng-class="{'popinactive' : popinactive}">
+        <div class="swiper-wrapper">
+            <div data-ng-repeat="(index, media) in medialist | limitTo : startlimit" class="swiper-slide board" id="swiper-slide-{{medialistid}}-{{index}}">
+
+                <figure>
+                    <img data-ng-src="/mediaext/{{media.image}}" alt="" class="inbox swiper-lazy" />
+                    <figcaption></figcaption>
+                </figure>
+
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev swiper-button-white"></div>
+        <div class="swiper-button-next swiper-button-white"></div>
+        <div class="closebutton" data-ng-click="popinactive = false;">
+            <div class="button">
+                <img src="/mediaskin/close.png" alt="menu close button image" />
+            </div>
+        </div>
+    </div>
+
+    <div class="controle">
+        <ul class="thumbs" data-ng-cloak>
+            <li data-ng-repeat="(index, media) in medialist | limitTo : startlimit"
+                class="cell-micro cell-sq"
+                data-ng-mousedown="click[index] = true" 
+                data-ng-mouseup="click[index] = false"
+                data-ng-click="goToIndex(index, $event); popinactive=true;">
+                    <a href="/mediaext/{{media.image}}">
+                        <div class="nucleus toggle_foreground twinkle" data-ng-class="{click:click[index]}">
+                            <img class="img-cover" data-ng-src="/mediaext/{{media.image}}" alt="{{media.caption}}" />
+                        </div>
+                    </a>
+            </li>
+        </ul>
+    </div>
+
+    <div data-ng-click="moreImages()" data-ng-if="medialist.length >= startlimit">
+        <strong>+ ({{startlimit}}/{{medialist.length}}) +</strong>
+    </div>
+
+</div>
