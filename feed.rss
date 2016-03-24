@@ -835,43 +835,7 @@
       <priority>0.5</priority>
    </url>
    <url>
-      <loc>http://rbuas.com/corpusclassique</loc>
-      <lastmod>20150901</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>1.0</priority>
-   </url>
-   <url>
-      <loc>http://rbuas.com/corpuscontour</loc>
-      <lastmod>20150901</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>1.0</priority>
-   </url>
-   <url>
-      <loc>http://rbuas.com/corpusempreinte</loc>
-      <lastmod>20150901</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>1.0</priority>
-   </url>
-   <url>
       <loc>http://rbuas.com/corpusshadow</loc>
-      <lastmod>20150901</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>1.0</priority>
-   </url>
-   <url>
-      <loc>http://rbuas.com/corpustoile</loc>
-      <lastmod>20150901</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>1.0</priority>
-   </url>
-   <url>
-      <loc>http://rbuas.com/paradisperdus</loc>
-      <lastmod>20160301</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>1.0</priority>
-   </url>
-   <url>
-      <loc>http://rbuas.com/popdance</loc>
       <lastmod>20150901</lastmod>
       <changefreq>monthly</changefreq>
       <priority>1.0</priority>
