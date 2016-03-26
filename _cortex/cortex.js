@@ -34,6 +34,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
         };
 
         this.options = $.extend({}, defaultOptions, options);
+        this.connections = {};
 
         var _synapse = this.options.synapse || new Synapse({asyncMode:this.options.asyncMode});
         this.synapse = function (synapse, args) {
@@ -526,11 +527,26 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
 
             var _this = this;
             _this.inconnection = true;
+            var response = _this.getStoredConnection(slug);
+            if(response) return Promise.resolve().then(function () {
+                    lazyAction(function() {
+                        _this.updateData(Cortex.DATA.USER, response.user);
+                        _this.updateData(Cortex.DATA.ROUTE, response.route);
+                        _this.updateData(Cortex.DATA.LANG, response.lang);
+
+                        if(response.route && response.route.ALBUMLINK) _this.album(response.route.ALBUMLINK);
+
+                        _this.inconnection = false;
+                    });
+                    return response;
+            });
 
             return this.synapse("connect", [slug]).then(
                 function success (response) {
                     var error = catchError(_this, response);
                     if(error) return error;
+
+                    _this.storeConnection(slug, response);
 
                     lazyAction(function() {
                         _this.updateData(Cortex.DATA.USER, response.user);
@@ -545,6 +561,20 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
                 },
                 function error (error) { _this.inconnection = false; return _this.error(error); }
             );
+        },
+
+        storeConnection : function(slug, response) {
+            if(!slug || !response)
+                return;
+
+            this.connections[slug] = response;
+        },
+
+        getStoredConnection : function(slug) {
+            if(!slug || !this.connections[slug])
+                return;
+
+            return this.connections[slug];
         },
 
         lang : function(lang) {

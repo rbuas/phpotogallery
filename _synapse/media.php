@@ -65,6 +65,8 @@ $processStatus = $BRAIN->EndProcess( $PROCESS );
 
 if($authorization) {
     header("Content-type: $filetype");
+    header("Pragma: cache");
+    header("Cache-Control: max-age=3600, must-revalidate");
     echo file_get_contents($file);
 }
 else

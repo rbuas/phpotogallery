@@ -44,7 +44,7 @@
             if(!routedata)
                 return;
 
-            var index = Math.floor(Math.random()*routedata.length);
+            var index = Math.floor(Math.random()*routedata.length) || 0;
             return routedata[index];
         };
 
