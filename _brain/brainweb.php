@@ -41,7 +41,6 @@ require_once( "xml.php" );
 require_once( "mail.php" );
 require_once( "user.php" );
 require_once( "pobject.php" );
-require_once( "note.php" );
 require_once( "medialibrary.php" );
 
 require_once( "brain.php" );
