@@ -71,7 +71,6 @@ $version = $BRAIN->Version();
         <script src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
         <!--<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js" type="text/javascript"></script>-->
         <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="/_ext/jquery.focuspoint.min.js" type="text/javascript"></script>
         <script src="/_ext/promise.min.js" type="text/javascript"></script>
 
 
