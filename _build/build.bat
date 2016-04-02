@@ -1,1 +1,0 @@
-call lessc -x --verbose ..\_skin\skin.less ..\_skin\skin.css
