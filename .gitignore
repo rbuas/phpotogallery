@@ -1,4 +1,5 @@
 /RBUAS
 /_build/node_modules
+/_brain
 *.old
 *.log
