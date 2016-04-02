@@ -27,6 +27,11 @@ class User {
         $this->passport = $passport;
         $this->favorite = $favorite;
         $this->history = $history;
+        $this->uid = $uid;
+        if($this->uid == NULL) {
+            list($name, $_) = explode('@',$this->email);
+            $this->uid = $name;
+        }
     }
 
     public function Save ( &$error = NULL ) {
@@ -96,6 +101,7 @@ class User {
 
     public function Info () {
         return [
+            "uid" => $this->uid,
             "email" => $this->email,
             "news" => $this->news,
             "lang" => $this->lang,
@@ -202,6 +208,7 @@ class User {
             return false;
         }
 
+        $uid = (isset($userData["uid"])) ? $userData["uid"] : NULL;
         $password = (isset($userData["password"])) ? $userData["password"] : NULL;
         $lang = (isset($userData["lang"])) ? $userData["lang"] : NULL;
         $news = (isset($userData["news"])) ? $userData["news"] : NULL;
@@ -211,7 +218,7 @@ class User {
         $passport = (isset($userData["passport"])) ? $userData["passport"] : NULL;
         $history = (isset($userData["history"])) ? $userData["history"] : NULL;
 
-        return new User($email, $password, $lang, $news, $status, $token, $passport, $favorite, $history);
+        return new User($email, $password, $lang, $news, $status, $token, $passport, $favorite, $history, $uid);
     }
 
     static public function RetrievePassword ($email, &$error) {
