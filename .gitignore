@@ -2,5 +2,6 @@
 /_build/node_modules
 /_brain
 /_build
+/_ext
 *.old
 *.log
