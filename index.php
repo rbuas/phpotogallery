@@ -82,6 +82,7 @@ $version = $BRAIN->Version();
         <script src="/_cortex/tracer.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/clientstorage.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/clientdata.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/datamanager.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/synapse.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/cortex.js?<?= $version ?>" type="text/javascript"></script>
 
