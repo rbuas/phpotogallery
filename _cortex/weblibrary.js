@@ -53,7 +53,7 @@ WebLibrary = (function ($, tracer, ClientData, Synapse) {
 
         album : function(slug) {
             var catalog = this.catalog();
-            if(!catalog[slug])
+            if(!slug || !catalog[slug])
                 return Promise.resolve();
 
             var _this = this;
