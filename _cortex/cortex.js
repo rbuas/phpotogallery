@@ -426,7 +426,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
 
             if(base && map && map[base]) {
                 slug = base;
-                params.media = breadcrumb[1];
+                params.media = breadcrumb && breadcrumb.length > 1 ? breadcrumb[1] : null;
             }
 
             if(slug == this.get(Cortex.DATA.SLUG) && !this.firstaccess) {
