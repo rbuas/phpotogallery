@@ -82,10 +82,10 @@ $version = $BRAIN->Version();
         <script src="/_cortex/tracer.js" type="text/javascript"></script>
         <script src="/_cortex/clientstorage.js" type="text/javascript"></script>
         <script src="/_cortex/clientdata.js" type="text/javascript"></script>
-
         <script src="/_cortex/synapse.js" type="text/javascript"></script>
         <script src="/_cortex/cortex.js" type="text/javascript"></script>
 
+        <script src="/_cortex/weblibrary.js" type="text/javascript"></script>
         <script type="text/javascript">
             (function ($, Cortex) {
                 cortex = new WebLibrary({version:"<?= $version ?>", memoryPath : "<?= MEDIALIBRARY ?>"});
