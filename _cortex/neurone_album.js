@@ -324,7 +324,6 @@
 
             album.list.push(media);
             count++;
-            if(Mobile.ios && count > 30) break;
         }
 
         instance.album = album;
@@ -356,7 +355,7 @@
 
         media.id = id;
         media.filethumb = "/media" + path + "thumb/" + id;
-        media.fileweb = IsMobile() ? "/media" + path + "mob/" + id : "/media" + path + "web/" + id;
+        media.fileweb = browserext.mobile() ? "/media" + path + "mob/" + id : "/media" + path + "web/" + id;
         media.filelow = "/media" + path + "low/" + id;
         media.downloadweb = "/mediaget" + path + "web/" + id;
         media.style = mediaStyle(media);
