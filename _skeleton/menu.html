@@ -1,4 +1,4 @@
-<div data-ng-show="master.menu" data-ng-init="master.mainmenuopened = false">
+<div data-ng-init="master.mainmenuopened = false">
     <div class="menupanel-closeout" data-ng-show="master.mainmenuopened" data-ng-click="master.mainmenuopened = false;"></div>
 
     <div class="optionsbutton menuanchor" data-ng-click="master.mainmenuopened = true">
@@ -13,7 +13,7 @@
                 </div>
             </li>
 
-            <li class="menulink" data-ng-repeat="menuitem in master.menu">
+            <li data-ng-if="master.menu != null" class="menulink" data-ng-repeat="menuitem in master.menu" data-ng-cloak>
                 <a href="#{{menuitem.slug}}" title="{{menuitem.tip}}" alt="menu item {{menuitem.slug}}">
                     <div class="button">
                         <img data-ng-src="{{master.skin(menuitem.icon)}}" alt="menu {{menuitem.slug}}" />
@@ -26,7 +26,14 @@
 
             <li class="user" data-ng-controller="NeuroneUser as user">
                 <div class="login" data-ng-show="!user.isLogged()">
-                    <h3>{{master.translate('LOGIN_TITLE')}}</h3>
+                    <h3>
+                        {{master.translate({
+                            "PT":"identificação",
+                            "EN":"identification",
+                            "ES":"identificación",
+                            "FR":"identification"
+                        })}}
+                    </h3>
                     <div class="block message {{user.messageType}}" data-ng-if="user.message" data-ng-cloak data-description="{{user.message}}">
                        {{master.translate({
                            "PT":"oops, tente outra vez !",
@@ -38,29 +45,57 @@
                         <input type="text" 
                                data-ng-model="user.login_mail" 
                                data-ng-keypress="user.login($event)"
-                               data-ng-class="{inputerror: user.postback && !user.login_mail}"
-                               placeholder="{{master.translate('USER_ID')}}"
-                               title="{{master.translate('USER_ID')}}" />
+                               data-ng-class="{inputerror: user.postback && (!user.login_mail || user.login_mail_error)}"
+                               placeholder="{{master.translate({'PT':'usuário','EN':'user','ES':'usuario','FR':'utilisateur'})}}"
+                               title="{{master.translate({'PT':'usuário','EN':'user','ES':'usuario','FR':'utilisateur'})}}" />
                     </div>
                     <div class="block">
                         <input type="password" 
                                data-ng-model="user.login_pass" 
                                data-ng-keypress="user.login($event)"
                                data-ng-class="{inputerror: user.postback && !user.login_pass}"
-                               placeholder="{{master.translate('USER_PASS')}}"
-                               title="{{master.translate('USER_PASS')}}" />
+                               placeholder="{{master.translate({'PT':'senha','EN':'password','ES':'contraseña','FR':'mot de passe'})}}"
+                               title="{{master.translate({'PT':'senha','EN':'password','ES':'contraseña','FR':'mot de passe'})}}" />
                     </div>
                     <div class="block actions">
-                        <span class="buttonlink" data-ng-click="user.register()">{{master.translate('BUTTON_REGISTER')}}</span>
-                        <span class="buttonlink" data-ng-click="user.login()">{{master.translate('BUTTON_LOGIN')}}</span>
-                        <span class="buttonlink autowidth" data-ng-click="user.retrievePassword()">{{master.translate('BUTTON_REMEMBER')}}</span>
+                        <span class="buttonlink" data-ng-click="user.register()">
+                            {{master.translate({
+                                "PT":"cadastrar",
+                                "EN":"register",
+                                "ES":"registrarse",
+                                "FR":"enregistrer"
+                            })}}
+                        </span>
+                        <span class="buttonlink" data-ng-click="user.login()">
+                            {{master.translate({
+                                "PT":"identificar-se",
+                                "EN":"login",
+                                "ES":"entrar",
+                                "FR":"s'identifier"
+                            })}}
+                        </span>
+                        <span class="buttonlink autowidth" data-ng-click="user.retrievePassword()">
+                            {{master.translate({
+                                "PT":"esqueci minha senha",
+                                "EN":"forgot password",
+                                "ES":"no recuerdo de ma contraseña",
+                                "FR":"mot de passe oublié"
+                            })}}
+                        </span>
                     </div>
                 </div>
                 <div class="block logout" data-ng-show="user.isLogged()">
                     {{user.salutation}}
-                    <h3>{{user.current.email}}</h3>
+                    <h3>{{user.current.uid}}</h3>
                     <div class="block actions">
-                        <span class="buttonlink" data-ng-click="user.logout()">{{master.translate('BUTTON_LOGOUT')}}</span>
+                        <span class="buttonlink" data-ng-click="user.logout()">
+                            {{master.translate({
+                                "PT":"sair",
+                                "EN":"logout",
+                                "ES":"sair",
+                                "FR":"déconnexion"
+                            })}}
+                        </span>
                     </div>
                 </div>
 
