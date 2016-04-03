@@ -34,6 +34,10 @@
             if(!user.login_mail || !user.login_pass)
                 return;
 
+            user.login_mail_error = user.login_mail.indexOf("@") < 0 || user.login_mail.indexOf(".") < 0;
+            if(user.login_mail_error)
+                return;
+
             cortex.login(user.login_mail, user.login_pass).then(
                 function success (response) {
                     var error = !response || response.status != "success";

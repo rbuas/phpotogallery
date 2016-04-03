@@ -19,7 +19,7 @@ ClientStorage = (function ($) {
 
         // properties
         this._storage = null;
-        this.data = this.options.initialData || {};
+        this.data = this.options.initialData ?  $.extend({}, this.options.initialData) : {};
 
         //initialise storage
         var canUseBrowserStorage = testLocalStoragePermissions();
@@ -60,7 +60,7 @@ ClientStorage = (function ($) {
 
                 if(value === null)
                     this._storage.reset(key);
-                else
+                else 
                     this._storage.set(key, value);
             }
         },
@@ -79,7 +79,7 @@ ClientStorage = (function ($) {
             this.data = loaded;
         },
 
-        set : function (key, value) {
+        set: function (key, value) {
             if(!key)
                 return;
 
@@ -89,6 +89,10 @@ ClientStorage = (function ($) {
         get : function (key) {
             if(key in this.data)
                 return this.data[key];
+        },
+
+        collection: function () {
+            return this.data;
         },
 
         reset : function (key) {
@@ -139,7 +143,6 @@ ClientStorage = (function ($) {
         },
 
         reset : function (key) {
-
             window.localStorage.removeItem(key);
         }
 
@@ -152,7 +155,8 @@ ClientStorage = (function ($) {
         storagetype: ClientStorage.STORAGE_COOKIE,
         set : function (key, value) {
             var strValue = JSON.stringify(value);
-            document.cookie = key + "=" + strValue;
+            var expires = new Date(new Date().setYear(new Date().getFullYear() + 1));
+            document.cookie = key + "=" + strValue + ";path=/; expires=" + expires.toString() + ";";
         },
 
         get : function (key) {
@@ -164,7 +168,13 @@ ClientStorage = (function ($) {
 
                 if (c.indexOf(keyEQ) == 0) {
                     var value = c.substring(keyEQ.length, c.length);
-                    return value && JSON.parse(value);
+                    var parsedValue;
+                    try {
+                        parsedValue = JSON.parse(value);
+                    } catch (e) {
+                        parsedValue = value;
+                    }
+                    return parsedValue;
                 }
             }
             return null;
