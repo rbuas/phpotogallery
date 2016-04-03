@@ -4,5 +4,6 @@
 /_build
 /_ext
 /_synapse
+/_cortex
 *.old
 *.log
