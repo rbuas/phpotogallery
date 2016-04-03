@@ -142,15 +142,11 @@ browserext = (function ($, Modernizr) {
             return classesString;
         },
         urlHash: function (url) {
-            if(!url)
-                return window.location.hash;
-
+            url = url || window.location.hash;
             return url.indexOf("#") >= 0 ? url.split("#")[1] : url;
         },
         urlSearch: function (url) {
-            if(!url)
-                return window.location.search;
-
+            url = url || window.location.search;
             return url.indexOf("?") >= 0 ? url.split(/[?#]/)[1] : url;
         },
         urlPath: function(url) {
