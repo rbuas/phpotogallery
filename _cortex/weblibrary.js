@@ -1,10 +1,10 @@
 /////////////////////////////////////////////////////////////////
-// MediaLibrary extends Cortex
+// WebLibrary extends Cortex
 // author: Rodrigo Buas - rodrigobuas@gmail.com - 20150621
 /////////////////////////////////////////////////////////////////
-MediaLibrary = (function ($, tracer, ClientData, Synapse) {
+WebLibrary = (function ($, tracer, ClientData, Synapse) {
 
-    function MediaLibrary (options) {
+    function WebLibrary (options) {
         var _this = this;
         this.ready = false;
 
@@ -18,7 +18,7 @@ MediaLibrary = (function ($, tracer, ClientData, Synapse) {
             librarySkeleton : "library",
             albumSkeleton : "album",
             albumContent : "content",
-            module : "MediaLibrary"
+            module : "WebLibrary"
         };
 
         this.options = $.extend({}, defaultOptions, options);
@@ -28,7 +28,7 @@ MediaLibrary = (function ($, tracer, ClientData, Synapse) {
         this.ready = true;
     };
 
-    MediaLibrary.prototype = $.extend({}, Cortex.prototype, {
+    WebLibrary.prototype = $.extend({}, Cortex.prototype, {
         stockAlbum : function (slug, album) {
             if(!slug || !album)
                 return;
@@ -96,5 +96,5 @@ MediaLibrary = (function ($, tracer, ClientData, Synapse) {
     Cortex.prototype.constructor = Cortex;
 
 
-    return MediaLibrary;
+    return WebLibrary;
 })(jQuery, tracer, ClientData, Synapse);

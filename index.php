@@ -5,7 +5,7 @@ set_time_limit(30);
 set_include_path('.');
 
 
-require_once("_brain/brainweb.php");
+require_once("_brain/weblibrary.php");
 
 if(isset($_REQUEST["access"])) {
     echo("oops!");
@@ -18,7 +18,7 @@ if(!$BRAIN->Access($error)) {
 $version = $BRAIN->Version();
 ?>
 <!DOCTYPE html>
-<html lang="en" data-ng-app="MediaLibrary">
+<html lang="en" data-ng-app="WebLibrary">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -46,16 +46,11 @@ $version = $BRAIN->Version();
 
         <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css' />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.1.0/css/swiper.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.print.css" media="print" />
         <!--[if lt IE 9]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
             <script src="/_cortex/ie-fix.js"></script>
         <![endif]-->
 
-        <!-- Bootstrap -->
-        <!--<link href="/_skin/bootstrap.min.css" rel="stylesheet">-->
-        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">-->
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -65,22 +60,13 @@ $version = $BRAIN->Version();
         <link rel="stylesheet" href="/_skin/skin.css" />
 
         <!-- JQuery -->
-        <!-- <script src="/_cortex/jquery.min.js" type="text/javascript"></script>
-        <script src="/_cortex/jquery.min.js" type="text/javascript"></script>
-        <script src="http://code.jquery.com/jquery-2.1.1.js" type="text/javascript"></script>-->
         <script src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
-        <!--<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js" type="text/javascript"></script>-->
         <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js" type="text/javascript"></script>
         <script src="/_ext/promise.min.js" type="text/javascript"></script>
+        <script src="/_ext/modernizr-custom.min.js" type="text/javascript"></script>
 
-
-        <!-- Bootstrap -->
-        <!--<script src="/_cortex/bootstrap.min.js"></script>-->
-        <!--script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script-->
 
         <!-- Angular -->
-        <!-- //ajax.googleapis.com/ajax/libs/angularjs/1.4.6/ -->
-        <!-- //code.angularjs.org/1.4.6/ -->
         <script src="http://code.angularjs.org/1.4.6/angular.min.js" type="text/javascript"></script>
         <script src="http://code.angularjs.org/1.4.6/angular-route.js" type="text/javascript"></script>
         <script src="http://code.angularjs.org/1.4.6/angular-sanitize.min.js" type="text/javascript"></script>
@@ -90,13 +76,9 @@ $version = $BRAIN->Version();
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.1.0/js/swiper.min.js" type="text/javascript"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.1.0/js/swiper.jquery.min.js" type="text/javascript"></script>
 
-        <!-- Calendar -->
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js" type="text/javascript"></script> -->
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.min.js" type="text/javascript"></script> -->
-
         <!-- CORTEX -->
-        <script src="/_cortex/extensions.js" type="text/javascript"></script>
-        <script src="/_cortex/core.js" type="text/javascript"></script>
+        <script src="/_cortex/jsext.js" type="text/javascript"></script>
+        <script src="/_cortex/browserext.js" type="text/javascript"></script>
         <script src="/_cortex/tracer.js" type="text/javascript"></script>
         <script src="/_cortex/clientstorage.js" type="text/javascript"></script>
         <script src="/_cortex/clientdata.js" type="text/javascript"></script>
@@ -106,7 +88,7 @@ $version = $BRAIN->Version();
 
         <script type="text/javascript">
             (function ($, Cortex) {
-                cortex = new Cortex({version:"<?= $version ?>", memoryPath : "<?= MEDIALIBRARY ?>"});
+                cortex = new WebLibrary({version:"<?= $version ?>", memoryPath : "<?= MEDIALIBRARY ?>"});
             })(jQuery, Cortex);
         </script>
 
