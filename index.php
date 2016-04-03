@@ -57,7 +57,7 @@ $version = $BRAIN->Version();
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <link rel="stylesheet" href="/_skin/skin.css" />
+        <link rel="stylesheet" href="/_skin/skin.css?<?= $version ?>" />
 
         <!-- JQuery -->
         <script src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
@@ -77,32 +77,32 @@ $version = $BRAIN->Version();
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.1.0/js/swiper.jquery.min.js" type="text/javascript"></script>
 
         <!-- CORTEX -->
-        <script src="/_cortex/jsext.js" type="text/javascript"></script>
-        <script src="/_cortex/browserext.js" type="text/javascript"></script>
-        <script src="/_cortex/tracer.js" type="text/javascript"></script>
-        <script src="/_cortex/clientstorage.js" type="text/javascript"></script>
-        <script src="/_cortex/clientdata.js" type="text/javascript"></script>
-        <script src="/_cortex/synapse.js" type="text/javascript"></script>
-        <script src="/_cortex/cortex.js" type="text/javascript"></script>
+        <script src="/_cortex/jsext.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/browserext.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/tracer.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/clientstorage.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/clientdata.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/synapse.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/cortex.js?<?= $version ?>" type="text/javascript"></script>
 
-        <script src="/_cortex/weblibrary.js" type="text/javascript"></script>
+        <script src="/_cortex/weblibrary.js?<?= $version ?>" type="text/javascript"></script>
         <script type="text/javascript">
             (function ($, Cortex) {
                 cortex = new WebLibrary({version:"<?= $version ?>", memoryPath : "<?= MEDIALIBRARY ?>"});
             })(jQuery, Cortex);
         </script>
 
-        <script src="/_cortex/neurone_route.js" type="text/javascript"></script>
-        <script src="/_cortex/neurone_master.js" type="text/javascript"></script>
-        <script src="/_cortex/neurone_admin.js" type="text/javascript"></script>
-        <script src="/_cortex/neurone_user.js" type="text/javascript"></script>
-        <script src="/_cortex/neurone_medialist.js" type="text/javascript"></script>
-        <script src="/_cortex/neurone_album.js" type="text/javascript"></script>
-        <script src="/_cortex/neurone_library.js" type="text/javascript"></script>
-        <script src="/_cortex/neurone_notes.js" type="text/javascript"></script>
-        <script src="/_cortex/neurone_imageload.js" type="text/javascript"></script>
-        <script src="/_cortex/neurone_imageinview.js" type="text/javascript"></script>
-        <script src="/_cortex/scrollsnap.js" type="text/javascript"></script>
+        <script src="/_cortex/neurone_route.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/neurone_master.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/neurone_admin.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/neurone_user.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/neurone_medialist.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/neurone_album.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/neurone_library.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/neurone_notes.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/neurone_imageload.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/neurone_imageinview.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/scrollsnap.js?<?= $version ?>" type="text/javascript"></script>
 
         <!-- GOOGLE Analytics -->
         <script type="text/javascript">
