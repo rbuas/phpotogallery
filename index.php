@@ -67,10 +67,10 @@ $version = $BRAIN->Version();
 
 
         <!-- Angular -->
-        <script src="http://code.angularjs.org/1.4.6/angular.min.js" type="text/javascript"></script>
-        <script src="http://code.angularjs.org/1.4.6/angular-route.js" type="text/javascript"></script>
-        <script src="http://code.angularjs.org/1.4.6/angular-sanitize.min.js" type="text/javascript"></script>
-        <script src="http://code.angularjs.org/1.4.6/angular-touch.js" type="text/javascript"></script>
+        <script src="http://code.angularjs.org/1.5.3/angular.min.js" type="text/javascript"></script>
+        <script src="http://code.angularjs.org/1.5.3/angular-route.js" type="text/javascript"></script>
+        <script src="http://code.angularjs.org/1.5.3/angular-sanitize.min.js" type="text/javascript"></script>
+        <script src="http://code.angularjs.org/1.5.3/angular-touch.js" type="text/javascript"></script>
 
         <!-- Swipper -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.1.0/js/swiper.min.js" type="text/javascript"></script>
