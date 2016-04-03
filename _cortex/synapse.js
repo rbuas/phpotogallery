@@ -11,7 +11,7 @@ Synapse = (function ($, tracer) {
             defaultEndRequest : null,
             actions : {
                 "getConnection" : "getconnection",
-                "buildSite" : "buildsite",
+                "buildLibrary" : "buildlibrary",
                 "buildAlbum" : "buildalbum",
                 "reset" : "reset",
                 "cleanSite" : "cleansite",
@@ -163,8 +163,8 @@ Synapse = (function ($, tracer) {
             return this.get(synapse + params);
         },
 
-        buildSite : function() {
-            var synapse  = this.getUrl("buildSite");
+        buildLibrary : function() {
+            var synapse  = this.getUrl("buildLibrary");
             if(!synapse)
                 return false;
 

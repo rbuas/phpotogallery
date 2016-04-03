@@ -12,19 +12,15 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
         var defaultOptions = {
             version : "201603080830",
             defaultPage : "home",
-            config : "/config.jsc",
-            sitemap : "/sitemap.jsc",
-            common : "/common.res",
+            config : null,
+            sitemap : null,
+            common : null,
             root : "",
-            rootNote : "notes",
-            albumsPath : "/RBUAS",
+            rootNote : "NOTES",
             skeletonPath : "/_skeleton",
             skinPath : "/mediaskin",
             memoryPath : '/_memory',
             contentExt : ".html",
-            librarySkeleton : "library",
-            albumSkeleton : "album",
-            albumContent : "content",
             dependencies : ['ngRoute', 'ngSanitize', 'ngTouch'],
             module : "CortexModule",
             asyncMode:true,
@@ -59,12 +55,12 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
 
         startModule(this);
 
-        this.updateData(Cortex.DATA.LANG, getBrowserLang() || this.options[Cortex.DATA.LANG]);
-        this.updateData(Cortex.DATA.USER, this.options[Cortex.DATA.USER] || {});
+        browserext.injectClasses();
 
-        $(window).ready(function() { _this.injectMasterClasses(); });
+        _this.updateData(Cortex.DATA.LANG, browserext.lang() || _this.options[Cortex.DATA.LANG]);
+        _this.updateData(Cortex.DATA.USER, _this.options[Cortex.DATA.USER] || {});
 
-        this.ready = true;
+        _this.ready = true;
     };
 
     Cortex.DATA = {
@@ -119,6 +115,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
 
         config : function (key) {
             var config = this.get(Cortex.DATA.CONFIG);
+
             //get all
             if(!key || !config)
                 return config;
@@ -146,10 +143,30 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             return;
         },
 
+        catchError: function (response) {
+            if(!response || !response.status) {
+                var error = "Missing response status.";
+                this.error(error);
+                return error;
+            }
 
-        /////////////
-        // CORE
-        ///////
+            if(response.status != "success") {
+                var error = response.error || response.status_message || "";
+                this.error("Response status error : " + error);
+                return error;
+            }
+        },
+
+        loadResource: function ( key, filename ) {
+            if(!filename)
+                return Promise.resolve();
+
+            var _this = this;
+            return this.synapse("load", [filename]).then(
+                function success (data) { return _this.updateData(key, data); },
+                function error (error) { return _this.error(error); }
+            );
+        },
 
         update : function (tab) {
             if(!tab)
@@ -315,8 +332,6 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             if(!map)
                 return;
 
-            blacklist = cleanBlacklist(blacklist);
-
             var list = {};
             for(slug in map) {
                 if(!map.hasOwnProperty(slug))
@@ -340,25 +355,6 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
                     list[slug] = album;
             }
             return list;
-        },
-
-        stockAlbum : function (slug, album) {
-            if(!slug || !album)
-                return;
-
-            if(!this.data[Cortex.DATA.ALBUM]) this.data[Cortex.DATA.ALBUM] = {};
-
-            this.data[Cortex.DATA.ALBUM][slug] = album;
-            this.broadcast(Cortex.DATA.ALBUM);
-            return album;
-        },
-
-        userHasPassport : function (user, slug) {
-            user = user || this.user();
-            if(!user || !user.passport)
-                return false;
-
-            return user.passport[slug];
         },
 
         param : function (key, value) {
@@ -423,25 +419,16 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             url = url || window.location.hash;
 
             var map = this.get(Cortex.DATA.MAP);
-            if(!map)
-                return;
-
-            var slugInfo = getSlugInfo(url);
-            var slug = slugInfo ? slugInfo.slug : null;
-            var params = slugInfo ? slugInfo.params : null;
-            var breadcrumb = slugInfo ? slugInfo.breadcrumb : null;
+            var slug = browserext.urlPath();
+            var params = browserext.searchParams();
+            var breadcrumb = browserext.breadcrumb();
             var base = breadcrumb && breadcrumb.length > 1 ? breadcrumb[0] : null;
 
-            if(base) {
-                if(base == this.options.rootNote) {
-                    var notesParam = breadcrumb.slice();
-                    slug = notesParam.shift();
-                    params.noteid = notesParam.join("/");
-                } else if(map[base]) {
+            if(base && map && map[base]) {
                     slug = base;
                     params.media = breadcrumb[1];
                 }
-            } 
+            }
 
             if(slug == this.get(Cortex.DATA.SLUG) && !this.firstaccess) {
                 _this.updateData(Cortex.DATA.PARAMS, params);
@@ -450,72 +437,17 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
 
             return this.connect(slug).then(
                 function success (response) {
-                    if(!catchError(_this, response)) {
+                    if(!_this.catchError(response)) {
                         _this.updateData(Cortex.DATA.SLUG, slug || _this.options.defaultPage);
                         _this.updateData(Cortex.DATA.PARAMS, params);
                     }
                     _this.broadcast(Cortex.DATA.ROUTE);
                     _this.firstaccess = false;
                 },
-                function error (error) { catchError(_this, {status:"error", error:"connection error"}) }
+                function error (error) { _this.catchError({status:"error", error:"connection error"}) }
             );
         },
 
-        useragent : function() {
-            if(this.agent)
-                return this.agent;
-
-            var android = navigator.userAgent.match(/Android/i);
-            var blackberry = navigator.userAgent.match(/BlackBerry/i);
-            var ios = navigator.userAgent.match(/iPhone|iPad|iPod/i);
-            var operamini = navigator.userAgent.match(/Opera Mini/i);
-            var windows = navigator.userAgent.match(/IEMobile/i);
-
-            var chrome = navigator.userAgent.match(/Chrome/i);
-            var firefox = navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/i);
-            var opera = navigator.userAgent.match(/OPR\/(\d+\.\d+)/i);
-            var safari = navigator.userAgent.match(/Safari\/(\d+\.\d+)/i);
-            if (navigator.userAgent.indexOf('MSIE') != -1)
-                var detectIEregexp = /MSIE (\d+\.\d+)/i; //test for MSIE x.x
-            else // if no "MSIE" string in userAgent
-                var detectIEregexp = /Trident.*rv[ :]*(\d+\.\d+)/i; //test for rv:x.x or rv x.x where Trident string exists
-            var ie = navigator.userAgent.match(detectIEregexp);
-
-            this.agent = {
-                android : android,
-                blackberry : blackberry,
-                ios : ios,
-                operamini : operamini,
-                windows : windows,
-                mobile : android | blackberry | ios | operamini | windows,
-                ie : ie,
-                opera : opera,
-                firefox : firefox,
-                opera : opera,
-                chrome : chrome,
-                safari : chrome == null && safari
-            };
-            return this.agent;
-        },
-
-        injectMasterClasses : function () {
-            var agent = this.useragent();
-            if(!agent)
-                return;
-
-            var classes = "";
-            for(var a in agent) {
-                var aTest = agent[a];
-                if(!aTest)
-                    continue;
-
-                var aClass = a;
-                var aVersion = aTest.length > 1 ? "-" + aTest[1] : "";
-                classes += "agent-" + aClass + aVersion + " ";
-            }
-
-            $("body").addClass(classes);
-        },
 
 
         /////////////
@@ -543,7 +475,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
 
             return this.synapse("connect", [slug]).then(
                 function success (response) {
-                    var error = catchError(_this, response);
+                    var error = _this.catchError(response);
                     if(error) return error;
 
                     _this.storeConnection(slug, response);
@@ -577,11 +509,61 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             return this.connections[slug];
         },
 
+        reset : function() {
+            var _this = this;
+            return this.synapse("reset").then(
+                function success (response) { if(_this.catchError(response)) return; window.location.reload(); },
+                function error (error) { return _this.error(error); }
+            );
+        },
+
+        cleanSite : function() {
+            var _this = this;
+            return this.synapse("cleanSite").then(
+                function success (response) { if(_this.catchError(response)) return; },
+                function error (error) { return _this.error(error); }
+            );
+        },
+
+        activeGuardian : function (text) {
+            var _this = this;
+            return this.synapse("activeGuardian", [text]).then(
+                function success (response) { if(_this.catchError(response)) return; },
+                function error (error) { return _this.error(error); }
+            );
+        },
+
+        removeGuardian : function () {
+            var _this = this;
+            return this.synapse("removeGuardian").then(
+                function success (response) { if(_this.catchError(response)) return; },
+                function error (error) { return _this.error(error); }
+            );
+        },
+
+        admin : function () {
+            var _this = this;
+            return this.synapse("admin").then(
+                function success (response) { 
+                    if(_this.catchError(response))
+                        return;
+                    return response;
+                },
+                function error (error) { return _this.error(error); }
+            );
+        },
+
+
+
+        /////////////
+        // OPTIONS SECTION
+        ///////
+
         lang : function(lang) {
             var _this = this;
             return this.synapse("lang", [lang]).then(
                 function success (response) {
-                    var error = catchError(_this, response);
+                    var error = _this.catchError(response);
                     if(error) return error;
 
                     lazyAction(function() {
@@ -592,11 +574,17 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             );
         },
 
+
+
+        /////////////
+        // USER SECTION
+        ///////
+
         login : function (email, password) {
             var _this = this;
             return this.synapse("userLogin", [email, password]).then(
                 function success (response) {
-                    var error = catchError(_this, response);
+                    var error = _this.catchError(response);
                     if(error) return response;
 
                     lazyAction(function() {
@@ -612,12 +600,12 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             var _this = this;
             return this.synapse("userLogout").then(
                 function success (response) {
-                    var error = catchError(_this, response);
+                    var error = _this.catchError(response);
                     if(error) return error;
 
-                    setTimeout(function() {
+                    lazyAction(function() {
                         _this.updateData(Cortex.DATA.USER, response.user);
-                    }, 0);
+                    });
                 },
                 function error (error) { return _this.error(error); }
             );
@@ -628,7 +616,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             return this.synapse("userCreate", [email, password, news, lang]).then(
                 function success (response) {
                     setTimeout(function() {
-                        if(catchError(_this, response)) return;
+                        if(_this.catchError(response)) return;
                         _this.updateData(Cortex.DATA.USER, response.user);
                     }, 0);
                 },
@@ -640,7 +628,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             var _this = this;
             return this.synapse("userConfirm", [email, token]).then(
                 function success (response) {
-                    if(catchError(_this, response)) return;
+                    if(_this.catchError(response)) return;
                     _this.updateData(Cortex.DATA.USER, response.user);
                 },
                 function error (error) { return _this.error(error); }
@@ -651,7 +639,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             var _this = this;
             return this.synapse("userRetrievePassword", [email]).then(
                 function success (response) {
-                    if(catchError(_this, response)) return;
+                    if(_this.catchError(response)) return;
                     _this.updateData(Cortex.DATA.USER, response.user);
                 },
                 function error (error) { return _this.error(error); }
@@ -662,7 +650,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             var _this = this;
             return this.synapse("userCurrent").then(
                 function success (response) {
-                    if(catchError(_this, response)) return;
+                    if(_this.catchError(response)) return;
                     _this.updateData(Cortex.DATA.USER, response.user);
                 },
                 function error (error) { return _this.error(error); }
@@ -672,7 +660,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
         userAddFavorite : function(slug) {
             var _this = this;
             return this.synapse("userAddFavorite", [slug]).then(
-                function success (response) { if(catchError(_this, response)) return; },
+                function success (response) { if(_this.catchError(response)) return; },
                 function error (error) { return _this.error(error); }
             );
         },
@@ -680,7 +668,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
         userRemoveFavorite : function(slug) {
             var _this = this;
             return this.synapse("userRemoveFavorite", [slug]).then(
-                function success (response) { if(catchError(_this, response)) return; },
+                function success (response) { if(_this.catchError(response)) return; },
                 function error (error) { return _this.error(error); }
             );
         },
@@ -688,7 +676,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
         addPassport : function(email, slug) {
             var _this = this;
             return this.synapse("userAddPassport", [email, slug]).then(
-                function success (response) { if(catchError(_this, response)) return; },
+                function success (response) { if(_this.catchError(response)) return; },
                 function error (error) { return _this.error(error); }
             );
         },
@@ -696,140 +684,20 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
         userRemovePassport : function(email, slug) {
             var _this = this;
             return this.synapse("userRemovePassport", [email, slug]).then(
-                function success (response) { if(catchError(_this, response)) return; },
+                function success (response) { if(_this.catchError(response)) return; },
                 function error (error) { return _this.error(error); }
             );
         },
 
-        noteGet : function(note) {
-            var _this = this;
-            return this.synapse("noteGet", [note]).then(
-                function success (response) { 
-                    if(catchError(_this, response)) return;
-                    _this.updateData(Cortex.DATA.NOTE, {id:response.note, content:response.notecontent});
-                },
-                function error (error) { return _this.error(error); }
-            );
-        },
+        userHasPassport : function (user, slug) {
+            user = user || this.user();
+            if(!user || !user.passport)
+                return false;
 
-        noteSave : function(note, content) {
-            var _this = this;
-            return this.synapse("noteSave", [note, content]).then(
-                function success (response) { 
-                    if(catchError(_this, response)) return;
-                    _this.updateData(Cortex.DATA.NOTE, {id:response.note, content:response.notecontent});
-                },
-                function error (error) { return _this.error(error); }
-            );
-        },
-
-        noteList : function() {
-            var _this = this;
-            return this.synapse("noteList").then(
-                function success (response) { 
-                    if(catchError(_this, response)) return;
-                    _this.updateData(Cortex.DATA.NOTELIST, response.notelist);
-                },
-                function error (error) { return _this.error(error); }
-            );
-        },
-
-        library : function(filter) {
-            var _this = this;
-            return this.synapse("library", [filter]).then(
-                function success (response) { 
-                    if(catchError(_this, response)) return;
-                    _this.updateData(Cortex.DATA.LIBRARY, response.library);
-                },
-                function error (error) { return _this.error(error); }
-            );
-        },
-
-        album : function(slug) {
-            var catalog = this.catalog();
-            if(!catalog[slug])
-                return Promise.resolve();
-
-            var _this = this;
-            var albums = this.get(Cortex.DATA.ALBUM);
-            var album = (albums && albums[slug]) ? albums[slug] : null;
-            if(album) return Promise.resolve(album);
-
-            return this.synapse("album", [slug]).then(
-                function success (response) {
-                    if(catchError(_this, response)) return;
-                    var stockalbum = $.extend(response.album, {INDEX:response.albumindex});
-                    return _this.stockAlbum(slug, stockalbum);
-                },
-                function error (error) { return _this.error(error); }
-            );
-        },
-
-
-
-        ////////////
-        // ADMIN
-        ///////
-
-        reset : function() {
-            var _this = this;
-            return this.synapse("reset").then(
-                function success (response) { if(catchError(_this, response)) return; window.location.reload(); },
-                function error (error) { return _this.error(error); }
-            );
-        },
-
-        buildSite : function() {
-            var _this = this;
-            return this.synapse("buildSite").then(
-                function success (response) { if(catchError(_this, response)) return; },
-                function error (error) { return _this.error(error); }
-            );
-        },
-
-        buildAlbum : function(slug) {
-            var _this = this;
-            return this.synapse("buildAlbum", [slug]).then(
-                function success (response) { if(catchError(_this, response)) return; },
-                function error (error) { return _this.error(error); }
-            );
-        },
-
-        cleanSite : function() {
-            var _this = this;
-            return this.synapse("cleanSite").then(
-                function success (response) { if(catchError(_this, response)) return; },
-                function error (error) { return _this.error(error); }
-            );
-        },
-
-        activeGuardian : function (text) {
-            var _this = this;
-            return this.synapse("activeGuardian", [text]).then(
-                function success (response) { if(catchError(_this, response)) return; },
-                function error (error) { return _this.error(error); }
-            );
-        },
-
-        removeGuardian : function () {
-            var _this = this;
-            return this.synapse("removeGuardian").then(
-                function success (response) { if(catchError(_this, response)) return; },
-                function error (error) { return _this.error(error); }
-            );
-        },
-
-        admin : function () {
-            var _this = this;
-            return this.synapse("admin").then(
-                function success (response) { 
-                    if(catchError(_this, response))
-                        return;
-                    return response;
-                },
-                function error (error) { return _this.error(error); }
-            );
+            return user.passport[slug];
         }
+
+
 
     });
     ClientData.prototype.constructor = ClientData;
@@ -847,52 +715,9 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
         return false;
     }
 
-    function cleanBlacklist (blacklist, whitelist) {
-        if(!blacklist)
-            return;
-
-        if(!whitelist)
-            return blacklist;
-
-        var out = [];
-        for(var i in blacklist) {
-            if(!blacklist.hasOwnProperty(i))
-                continue;
-
-            var filter = blacklis[i];
-
-            if(whitelist.indexOf(filter) >= 0)
-                continue;
-
-            out.push(i);
-        }
-        return out;
-    }
-
     function setRoot (instance, root) {
         //hold the neurone root to broadcast
         instance.root = root;
-    }
-
-    function catchError (instance, response) {
-        if(!response || !response.status) {
-            var error = "Missing response status.";
-            instance.error(error);
-            return error;
-        }
-
-        if(response.status != "success") {
-            var error = response.error || response.status_message || "";
-            instance.error("Response status error : " + error);
-            return error;
-        }
-    }
-
-    function loadResource ( instance, key, filename ) {
-        return instance.synapse("load", [filename]).then(
-            function success (data) { return instance.updateData(key, data); },
-            function error (error) { return instance.error(error); }
-        );
     }
 
     function startModule (instance) {
@@ -902,164 +727,24 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
         .run(function($rootScope, $location) {
             setRoot(instance, $rootScope);
             $rootScope.$on("$locationChangeStart", function(event, next, current) {
-                setTimeout(function(){
+                lazyAction(function(){
                     instance.access(next);
-                }, 0);
+                });
             });
         });
 
-        loadResource(instance, Cortex.DATA.CONFIG, instance.options.config)
+        instance.loadResource(Cortex.DATA.CONFIG, instance.options.config)
         .then(function success () {
-            loadResource(instance, Cortex.DATA.COMMON, instance.options.common)
+            instance.loadResource(Cortex.DATA.COMMON, instance.options.common)
             .then(function success () {
-                loadResource(instance, Cortex.DATA.MAP, instance.options.sitemap)
-                .then(
-                    function success (response) {
+                instance.loadResource(Cortex.DATA.MAP, instance.options.sitemap)
+                .then(function success (response) {
+                    lazyAction(function(){
                         instance.access();
-                        //configModule(instance, map);
-                    }
-                );
+                    });
+                });
             });
         });
-    }
-
-    // function configModule (instance, map) {
-    //     if(!instance && !instance.module) return;
-
-    //     instance.module.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-    //         for(slug in map) {
-    //             var route = map[slug];
-    //             if(!route)
-    //                 continue;
-
-    //             var skeleton = instance.skeleton(route.SKELETON);
-    //             $routeProvider.when("/" . slug, {templateUrl:skeleton});
-    //         }
-
-    //         var portfolio = instance.skeleton("portfolio");
-    //         $routeProvider.when("", {templateUrl:portfolio});
-
-    //         //$routeProvider.otherwise({redirectTo: ""});
-    //         //$locationProvider.html5Mode(true);
-    //     }]);
-    // }
-
-    function getSlugInfo (url) {
-        if(!url)
-            return;
-
-        var full = url.indexOf("#") >= 0 ? url.split("#")[1] : "";
-        if(!full)
-            return;
-
-        var path = full.split("?");
-        var slug = path && path[0];
-        slug = slug.trim();
-        slug = (slug && slug[0] == '/') ? slug.substring(1) : slug;
-        slug = (slug && slug[slug.length - 1] == '/') ? slug.substring(0, slug.length - 1) : slug;
-
-        var serialParams = path && path.length > 1 ? path[1] : null;
-        var arrParams = serialParams ? serialParams.split("&") : [];
-        var params = {};
-        arrParams.forEach(function(param, index) {
-            if(!param)
-                return;
-
-            var paramSplit = param.split("=");
-            if(!paramSplit || paramSplit.length < 1)
-                return;
-
-            var key = paramSplit[0];
-            if(!key)
-                return;
-
-            var value = (paramSplit[1] && paramSplit[1] != "") ? decodeURI(paramSplit[1]) : true;
-            params[key] = value;
-        });
-
-        var breadcrumb = slug != "" ? slug.split("/") : [];
-
-        return {
-            full : full,
-            slug : slug,
-            params : params,
-            breadcrumb : breadcrumb
-        };
-    }
-
-/*
-    console.log("TEST1", getSlugInfo());
-    console.log("TEST2", getSlugInfo(""));
-    console.log("TEST3", getSlugInfo("/"));
-    console.log("TEST4", getSlugInfo("#/"));
-    console.log("TEST5", getSlugInfo("#/s1"));
-    console.log("TEST6", getSlugInfo("#/s1/s2"));
-    console.log("TEST7", getSlugInfo("#/s1/s2/"));
-    console.log("TEST8", getSlugInfo("#/s1/s2&p1"));
-    console.log("TEST9", getSlugInfo("#/s1/s2&p1&p2=v2&p3"));
-
-    function getRouteParams (url) {
-        if(!url)
-            return;
-
-        var slice = url.split("#");
-        if(slice.length < 2)
-            return;
-
-        var slug = slice[1];
-        if(!slug)
-            return;
-
-        return slug.substring(1).split("/");
-    }
-
-    function location () {
-        var location = window.location;
-        if(!location)
-            return;
-
-        return {
-            host : location.host,
-            slug : location.path,
-            port : location.port,
-            params : getLocationParams(location.search),
-            lang : getBrowserLang()
-        };
-    }
-
-    function getLocationParams (search) {
-        var params = {};
-
-        search = search.replace('?', '');
-        var list = search.split("&");
-        if(!list || list.length == 0)
-            return;
-
-        list.forEach(function(item, index) {
-            itemSplit = item.split("=");
-            if(!itemSplit || itemSplit.length != 2)
-                return;
-
-            var key = itemSplit[0];
-            var value = (itemSplit[1] != "") ? unescape(itemSplit[1]) : true ;
-            params[key] = value;
-        });
-        return params;
-    };
-*/
-
-    function getBrowserLang () {
-        var lang = window.navigator.userLanguage || window.navigator.language;
-
-        if (lang.indexOf('-') !== -1)
-            lang = lang.split('-')[0];
-
-        if (lang.indexOf('_') !== -1)
-            lang = lang.split('_')[0];
-
-        lang = lang.toUpperCase();
-
-        return lang;
     }
 
 
@@ -1067,4 +752,4 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
     window.translate = Cortex.translate;
 
     return Cortex;
-})(jQuery, tracer, ClientData, Synapse);
+})(jQuery, tracer, ClientData, Synapse, browserext);

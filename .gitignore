@@ -3,5 +3,6 @@
 /_brain
 /_build
 /_ext
+/_synapse
 *.old
 *.log
