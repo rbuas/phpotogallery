@@ -422,7 +422,7 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             var slug = browserext.urlHash();
             var params = browserext.searchParams();
             var breadcrumb = browserext.breadcrumb(slug);
-            var base = breadcrumb && breadcrumb.length > 1 ? breadcrumb[0] : null;
+            var base = breadcrumb && breadcrumb.length > 0 ? breadcrumb[0] : null;
 
             if(base && map && map[base]) {
                 slug = base;
