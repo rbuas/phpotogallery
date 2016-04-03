@@ -174,11 +174,11 @@ browserext = (function ($, Modernizr) {
             return null;
         },
         eParams: function(str) {
+            var oParams = {};
             if(!str)
-                return;
+                return oParams;
 
             var params = str.split(/[&]/);
-            var oParams = {};
             for (var i = 1; i < params.length; i++) {
                 var aParam = params[i].split("=");
                 var key = aParam[0];
