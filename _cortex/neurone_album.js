@@ -1,4 +1,4 @@
-(function ($, tracer, cortex) {
+(function ($, tracer, cortex, browserext) {
     cortex.directive('mediaalbum', function () {
         return {
             restrict:'AE',
@@ -24,7 +24,7 @@
                 instance.mediainfo = [];
                 instance.showcontrolpanel = true;
                 instance.showinfopanel = true;
-                instance.viewmode = Mobile.ios ? "HISTORYLINE" : "SLIDE"; 
+                instance.viewmode = browserext.ios() ? "HISTORYLINE" : "SLIDE"; 
 
                 instance.translate = function(token, forcelang) {
                     return cortex.translate(token, forcelang);
@@ -364,4 +364,4 @@
         return media;
     }
 
-})(jQuery, tracer, cortex);
+})(jQuery, tracer, cortex, browserext);

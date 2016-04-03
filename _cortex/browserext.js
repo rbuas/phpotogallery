@@ -301,6 +301,21 @@ browserext = (function ($, Modernizr) {
                 this.param(key, values.join("|"));
             }
             return values;
+        },
+        elemIsInView: function (element) {
+            if(!element)
+                return;
+
+            var vpHeight = $(window).height();
+            var tolerance = 0.5 * (vpHeight);
+            var vpTop = $(window).scrollTop() - tolerance;
+            var vpBottom = vpTop + vpHeight + tolerance;
+
+            var eTop = element.offset().top;
+            var eHeight = element.offsetHeight || element.height() || 0;
+            var eBottom = eTop + eHeight;
+
+            return (eTop > vpTop && eTop < vpBottom) || (eBottom > vpTop && eBottom < vpBottom);
         }
     };
 
