@@ -420,7 +420,6 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
 
             var map = this.get(Cortex.DATA.MAP);
             var slug = browserext.urlHash();
-            slug = (slug && slug.indexOf('/') == 0) ? slug.substring(1) : slug;
             var params = browserext.searchParams();
             var breadcrumb = browserext.breadcrumb(slug);
             var base = breadcrumb && breadcrumb.length > 1 ? breadcrumb[0] : null;
