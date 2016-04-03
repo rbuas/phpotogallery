@@ -419,9 +419,9 @@ Cortex = (function ($, tracer, ClientData, Synapse) {
             url = url || window.location.hash;
 
             var map = this.get(Cortex.DATA.MAP);
-            var slug = browserext.urlPath();
+            var slug = browserext.urlHash();
             var params = browserext.searchParams();
-            var breadcrumb = browserext.breadcrumb();
+            var breadcrumb = browserext.breadcrumb(slug);
             var base = breadcrumb && breadcrumb.length > 1 ? breadcrumb[0] : null;
 
             if(base && map && map[base]) {
