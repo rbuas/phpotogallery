@@ -1,6 +1,6 @@
 <div class="medialibrary" data-ng-show="library != null">
     <ul class="block">
-        <li class="cell cell-sq coverback" data-ng-repeat="album in library" data-ng-show="inUserFilter(album)">
+        <li class="cell cell-sq coverback" data-ng-repeat="album in library" data-ng-if="inUserFilter(album)" data-ng-cloak>
             <a href="#{{album.slug}}">
                 <figure class="nucleus">
                     <img data-imageinview class="photo" data-src="{{album.image}}" alt="" />
