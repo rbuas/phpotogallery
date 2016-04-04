@@ -1,6 +1,6 @@
 <div class="medialibrary" data-ng-show="library != null">
     <ul class="block">
-        <li class="cell cell-sq coverback" data-ng-repeat="album in library">
+        <li class="cell cell-sq coverback" data-ng-repeat="album in library" data-ng-show="inUserFilter(album)">
             <a href="#{{album.slug}}">
                 <figure class="nucleus">
                     <img data-imageinview class="photo" data-src="{{album.image}}" alt="" />
@@ -16,9 +16,9 @@
         </li>
     </ul>
     <ul class="block librarytags" data-ng-if="tags" data-ng-cloak>
-        <li class="blink toggle_border buttonlink" 
+        <li data-ng-repeat="tag in tags track by $index"
+            class="blink toggle_border buttonlink" 
             data-ng-class="{active : isFilterActive(tag), click:click[tag]}" 
-            data-ng-repeat="tag in tags track by $index"
             data-ng-click="toggleFilter(tag)"
             data-ng-mousedown="click[tag] = true" 
             data-ng-mouseup="click[tag] = false">#{{tag}}</li>
