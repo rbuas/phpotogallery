@@ -100,7 +100,7 @@ $version = $BRAIN->Version();
         <script src="/_cortex/neurone_medialist.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/neurone_album.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/neurone_library.js?<?= $version ?>" type="text/javascript"></script>
-        <script src="/_cortex/neurone_notes.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/neurone_memos.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/neurone_imageload.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/neurone_imageinview.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/scrollsnap.js?<?= $version ?>" type="text/javascript"></script>
