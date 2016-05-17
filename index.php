@@ -1,16 +1,20 @@
 <?php
-ini_set('display_errors', '1');
+ini_set('display_errors', '0');
 error_reporting( E_ALL );
 set_time_limit(30);
 set_include_path('.');
-
+define("MASTER", "rodrigobuas@gmail.com");
+define("POSTMAN", "rodrigobuas@gmail.com");
+define("POSTNAME", "Rodrigo Buas");
+define("POSTTAG", "RBUAS");
+define("MODE_VERBOSE", false);
+define("SITE_URL", "http://rbuas.com");
 
 require_once("_brain/weblibrary.php");
 
 if(isset($_REQUEST["access"])) {
     echo("oops!");
 }
-
 if(!$BRAIN->Access($error)) {
     echo($error);
     return;
