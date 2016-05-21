@@ -10,7 +10,7 @@ define("POSTTAG", "RBUAS");
 define("MODE_VERBOSE", false);
 define("SITE_URL", "http://rbuas.com");
 
-require_once("_brain/weblibrary.php");
+require_once("_brain/webkit.php");
 
 if(isset($_REQUEST["access"])) {
     echo("oops!");
