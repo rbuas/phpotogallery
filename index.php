@@ -83,6 +83,7 @@ $version = $BRAIN->Version();
         <!-- CORTEX -->
         <script src="/_cortex/jsext.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/browserext.js?<?= $version ?>" type="text/javascript"></script>
+        <script src="/_cortex/parserext.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/tracer.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/clientstorage.js?<?= $version ?>" type="text/javascript"></script>
         <script src="/_cortex/clientdata.js?<?= $version ?>" type="text/javascript"></script>
