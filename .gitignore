@@ -1,9 +1,7 @@
 /RBUAS
 /_build/node_modules
-/_brain
-/_build
-/_ext
-/_synapse
-/_cortex
+/media
 *.old
 *.log
+*.user
+google*.html

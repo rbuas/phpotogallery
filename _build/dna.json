@@ -1,0 +1,11 @@
+{
+    "skininput" : "../_skin/skin.less",
+    "skinoutput" : "../_skin/",
+    "skinfiles" : "../_skin/*.less",
+
+    "jsfiles" : ["../_cortex/*.js", "!../_cortex/*.min.js"],
+    "jsoutput" : "../_cortex/",
+    "jsmin" : ["../_cortex/*.min.js", "!cortexlib.js"],
+    "jspackoutput" : "../_cortex/",
+    "jspack" : "cortexlib.js"
+}
